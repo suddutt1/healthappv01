@@ -1,0 +1,21 @@
+{
+  "name": "healthappv0",
+  "description": "gulp,angular metrial",
+  "main": "index.js",
+  "authors": [
+    "Sudip Dutta"
+  ],
+  "license": "ISC",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "^1.0.8",
+    "angular": "^1.5.5"
+  }
+}

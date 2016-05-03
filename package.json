@@ -1,0 +1,11 @@
+{
+  "name": "healthappv0",
+  "version": "1.0.0",
+  "description": "gulp,angular metrial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sudip Dutta",
+  "license": "ISC"
+}
