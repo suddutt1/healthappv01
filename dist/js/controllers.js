@@ -9,15 +9,7 @@ appControllers.controller('appHomeController',['$scope','$location',
 		
 
 	}]);
-appControllers.controller('clientController',['$scope','$location',
-	function($scope,$location){
-		$scope.backToHome=function(){
-			$location.url('/appLanding');
-			console.log('backToHome');
 
-		};
-
-	}]);
 appControllers.controller('vendorController',['$scope',
 	function($scope){
 

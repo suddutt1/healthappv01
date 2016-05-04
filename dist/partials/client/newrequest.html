@@ -1,0 +1,27 @@
+<!-- Client new request creation --->
+<md-toolbar md-mini layout="row" layout-align="center center" >
+  <h3>Emergency Health Service </h3>
+</md-toolbar>
+<div flex layout-fill  class="md-inline-form" >
+	<md-toolbar layout="row" class="md-warn" layout-align="center" >
+	  <h4>Create new service request </h4>
+	</md-toolbar>
+	<md-content flex layout-padding layout-margin layout="row" layout-align="center center">
+    <div flex layout-padding layout="column" >
+      <form name="newRequestForm">
+		<md-input-container class="md-block">
+        <label>Select Request Type</label>
+        <md-select ng-model="serviceType">
+          <md-option ng-repeat="servType in serviceTypeList" value="{{servType.code}}">
+            {{servType.desc}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+		<section layout layout-align="center center">
+			 <md-button class="md-raised md-warn" ng-click="createNewRequest()" >Send Request</md-button>
+			 <md-button class="md-raised md-primary" ng-click="backToClientHome()" >Cancel</md-button>
+		</section>
+	  </form>
+	 </div>
+	</md-content>
+</div>

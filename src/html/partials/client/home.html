@@ -1,1 +1,40 @@
 <!-- Client Home page -->
+<md-toolbar md-mini layout="row" layout-align="center center" >
+  <h3>Emergency Health Service </h3>
+</md-toolbar>
+<div flex layout-fill  class="md-inline-form" >
+	<md-toolbar layout="row" class="md-warn" layout-align="center" >
+	  <h4>Client Home </h4>
+	</md-toolbar>
+	<span>{{message}}</span>
+	<div flex layout-fill  >
+		<md-content flex layout-margin layout-padding>
+			<md-card>
+				<md-card-title>
+					<md-card-title-text>
+					  <span class="md-headline">Requests</span>
+					</md-card-title-text>
+					 <md-card-actions layout="column" layout-align="center center">
+					 <div layout="column">
+						<md-button class="md-raised md-primary" ng-click="newRequest()" >Raise New Request </md-button>
+						<md-button class="md-raised" ng-click="viewAllRequests()" >View Request Status</md-button>
+					 </div>
+					 </md-card-actions>
+				</md-card-title>
+			</md-card>
+			<md-card>
+				<md-card-title>
+					<md-card-title-text>
+					  <span class="md-headline">Settings</span>
+					</md-card-title-text>
+					 <md-card-actions layout="column" layout-align="center center">
+					 <div layout="column">
+						<md-button class="md-raised">Payment Options </md-button>
+						<md-button class="md-raised">View Request Status</md-button>
+					 </div>
+					 </md-card-actions>
+				</md-card-title>
+			</md-card>
+		</md-content>
+	</div>
+</div>
