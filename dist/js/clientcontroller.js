@@ -28,8 +28,8 @@ clientModule.config(['$routeProvider',function($routeProvider){
 				templateUrl : 'partials/client/home.html',
 				controller : 'clientController'
 			})
-}]).controller('clientController',['$scope','$location','$$dataStore','$$clientDataService',
-	function($scope,$location,$$dataStore,$$clientDataService){
+}]).controller('clientController',['$scope','$location','$http','$$dataStore',
+	function($scope,$location,$http,$$dataStore){
 		
 		$scope.serviceTypeList = [];
 		$scope.serviceTypeList.push({ code :'AMB',desc:'Ambulance'});
@@ -37,10 +37,51 @@ clientModule.config(['$routeProvider',function($routeProvider){
 		$scope.serviceTypeList.push({ code :'ASST',desc:'Medical Assistance'});	
 		$scope.serviceTypeList.push({ code :'DOC',desc:'Doctor'});	
 		$scope.message = $$dataStore.getAppMessage();
-		console.log("LocationParameters :" + $location.search().page);
-		if($location.search().page == 'viewAll')
+		var clientDetails = $$dataStore.getAttribute('_clientDetails');
+		if(clientDetails!=null)
 		{
-			$scope.requestList = $$clientDataService.getAllRequests('ABCDEF');
+				$scope.client = clientDetails;
+		}
+		
+		console.log("LocationParameters :" + $location.search().page);
+		
+		var currentPage = $location.search().page ;
+		if(currentPage === 'viewAll')
+		{
+			if(clientDetails!=null)
+			{
+				var getRequest = {
+				url : __END_POINT__+'customer/service/serviceRequest/'+clientDetails.clientId ,
+				method : 'GET',
+				headers: {
+							'authorization': 'Basic testAuth',
+							'content-type': 'application/json'
+						},
+				
+			};
+			$http(getRequest).then(function(response){
+						console.log("Service Request List");
+						console.log(response);
+						if(response.data.success === true)
+						{
+							$scope.requestList = response.data.result;
+						}
+						
+					},function(err){
+						console.log("Registration error result"+ err);
+						//Alert that registration failed
+				}); 
+			}
+			//$scope.requestList = $$clientDataService.getAllRequests('ABCDEF');
+		}
+		else if(currentPage === 'home')
+		{
+			
+			var clientDetails = $$dataStore.getAttribute('_clientDetails');
+			if(clientDetails==null)
+			{
+					$location.url('/client/login');
+			}
 		}
 		
 		$scope.backToHome=function(){
@@ -49,32 +90,129 @@ clientModule.config(['$routeProvider',function($routeProvider){
 		};
 		
 		$scope.register=function(){
-			$location.url('/client/registersucess');
-			console.log('Registration sucess');
+			//Add the user to the storage
+			var clientDetails = {}; 
+			clientDetails.email = $scope.email;
+			clientDetails.phoneNumber = $scope.phone ;
+			clientDetails.age  = $scope.age,
+			clientDetails.address = $scope.address,
+			clientDetails.password = $scope.password,
+			clientDetails.name = $scope.name;
+			var postRequest = {
+				url : __END_POINT__+'customer/service/register' ,
+				method : 'POST',
+				headers: {
+							'authorization': 'Basic testAuth',
+							'content-type': 'application/json'
+						},
+				data : clientDetails
+			};
+			$http(postRequest).then(function(response){
+						console.log("Registration  result");
+						console.log(response);
+						$$dataStore.setAttribute('_clientDetails',clientDetails);
+						$location.url('/client/login');
+					},function(err){
+						console.log("Registration error result"+ err);
+						//Alert that registration failed
+				}); 	
 		};
 		$scope.newRequest=function(){
 			$location.url('/client/newRequest');
 			console.log('New request');
 		};
 		$scope.createNewRequest = function(){
-			if($$clientDataService.createNewServiceRequest('ABCDEF',0,0,$scope.serviceType,'CUSTAPP'))
+			var clientDetails = $$dataStore.getAttribute('_clientDetails');
+			if(clientDetails!=null)
 			{
-				$$dataStore.setAppMessage('Request created');
+				var request = {};
+				request.type = $scope.serviceType;
+				request.latitude = 0;
+				request.longitude = 0;
+				request.clientId = clientDetails.clientId;
+				request.channel = 'MOBILE';
+				
+				var postRequest = {
+					url : __END_POINT__+'customer/service/serviceRequest' ,
+					method : 'POST',
+					headers: {
+								'authorization': 'Basic testAuth',
+								'content-type': 'application/json'
+							},
+					data : request
+				};
+				$http(postRequest).then(function(response){
+						console.log("Service Request creation result");
+						console.log(response);
+						if(response.data.success === true)
+						{
+							$$dataStore.setAppMessage('Request created successfully');
+						}
+						else
+						{
+							$$dataStore.setAppMessage('Request could not be created');
+						}
+						$location.url('/client/?page=home') ;
+					},function(err){
+						console.log("Registration error result"+ err);
+						//Alert that registration failed
+				});
+				
+				
+				
 			}
 			else
 			{
-				$$dataStore.setAppMessage('Request creation failed');
+				alert('You are logged out. Please login again');
 			}
-			$location.url('/client/');
-			console.log('New request creation successfull');
+			
+			
 		}
 		$scope.backToClientHome = function(){
 			$$dataStore.setAppMessage('');
-			$location.url('/client/');
+			$location.url('/client/?page=home');
 			console.log('Back to client home');
 		}
 		$scope.viewAllRequests = function(){
 			$location.url('/client/viewallrequests?page=viewAll');
 			console.log('Showing the all request list');
+		}
+		//$scope.
+		$scope.validateLogin = function()
+		{
+			var formData = { 'email': $scope.email, 'password' : $scope.password};
+			var postRequest = {
+			url : __END_POINT__+'customer/service/validate' ,
+			method : 'POST',
+			headers: {
+                        'authorization': 'Basic testAuth',
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},					
+			data : formData
+			};
+		
+			$http(postRequest).then(function(response){
+					console.log("Validation  result");
+					console.log(response);
+					if(response.data.success === true)
+					{
+						var clientDetails = response.data.result;
+						$$dataStore.setAttribute('_clientDetails',clientDetails);
+						$location.url('/client/?page=home');
+						console.log('Login success');
+					}
+					
+				},function(err){
+					console.log("Validation error message"+ err);
+					//Alert that registration failed
+					alert('Error is communicating to server');
+			});
+			
 		}
 	}]);

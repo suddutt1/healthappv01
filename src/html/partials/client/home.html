@@ -5,7 +5,9 @@
 <div flex layout-fill  class="md-inline-form" >
 	<md-toolbar layout="row" class="md-warn" layout-align="center" >
 	  <h4>Client Home </h4>
+	  
 	</md-toolbar>
+	<h5>Hello {{client.name}}</h5>
 	<span>{{message}}</span>
 	<div flex layout-fill  >
 		<md-content flex layout-margin layout-padding>
@@ -35,6 +37,9 @@
 					 </md-card-actions>
 				</md-card-title>
 			</md-card>
+			<section layout layout-align="center center">
+				<md-button class="md-raised" ng-click="backToHome()" >Back</md-button>
+			</section>
 		</md-content>
 	</div>
 </div>

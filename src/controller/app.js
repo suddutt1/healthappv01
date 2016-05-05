@@ -1,10 +1,14 @@
+var __END_POINT__ = "http://localhost:9080/BackboneWebService/";
 var mainApp = angular.module('healthcareApp', [
   'ngRoute','ngMaterial','clientModule',
   'appControllers'
 ]);
 
-mainApp.config(['$routeProvider',function($routeProvider){
+mainApp.config(['$routeProvider','$httpProvider',function($routeProvider,$httpProvider){
 
+		//$httpProvider.defaults.useXDomain = true;
+		//delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        
 	$routeProvider.
 			when('/appLanding',
 				{
@@ -22,8 +26,14 @@ mainApp.config(['$routeProvider',function($routeProvider){
 }]).factory('$$dataStore',function(){
 	var dataStore = {};
 	dataStore.appmessage = '';
+	dataStore.session = {};
 	
-	
+	dataStore.setAttribute = function(key,obj){
+		dataStore.session[key] = obj;
+	};
+	dataStore.getAttribute = function(key){
+		return dataStore.session[key];
+	};
 	dataStore.setAppMessage  = function(msg){
 		dataStore.appmessage  = msg;
 	};
@@ -32,29 +42,4 @@ mainApp.config(['$routeProvider',function($routeProvider){
 	};
 	
 	return dataStore;
-}).factory('$$clientDataService',function(){
-	var dummyStore = {};
-	dummyStore.requests = [];
-	dummyStore.createNewServiceRequest=function(clientId,locx,locy,serviceType,channel){
-		var request = {};
-		var date = new Date();
-		request.status = 'N';
-		request.remarks = [];
-		request.remarks.push('Created ');
-		request.type = serviceType;
-		request.latitude = locx;
-		request.longitude = locy;
-		request.clientId = clientId;
-		request.requestId= date.getTime();
-		request.created  = date.getTime();
-		request.updated = date.getTime();
-		request.channel = channel;
-		dummyStore.requests.push(request);
-		return true;
-	}
-	dummyStore.getAllRequests= function(clientId){
-		return dummyStore.requests ;
-	}
-	return dummyStore;
-
 });
