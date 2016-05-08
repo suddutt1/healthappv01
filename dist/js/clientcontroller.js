@@ -207,6 +207,10 @@ clientModule.config(['$routeProvider',function($routeProvider){
 						$location.url('/client/?page=home');
 						console.log('Login success');
 					}
+					else
+					{
+						alert("Invalid credentials");
+					}
 					
 				},function(err){
 					console.log("Validation error message"+ err);
