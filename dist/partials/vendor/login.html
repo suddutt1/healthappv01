@@ -1,1 +1,38 @@
 <!-- Vendor login page -->
+<!-- Client login page -->
+<md-toolbar md-mini layout="row" layout-align="center center" >
+  <h3>Emergency Health Service </h3>
+</md-toolbar>
+
+<div flex layout-fill  class="md-inline-form" >
+	<md-toolbar layout="row" class="md-warn" layout-align="center" >
+	  <h4>On the Ground Vendor Login </h4>
+	</md-toolbar>	
+  <md-content flex layout-padding layout-margin layout="row" layout-align="center center">
+    <div flex layout-padding layout="column" >
+      <form name="loginForm">
+		<md-input-container class="md-block">
+		<label>Select Vendor Type</label>
+			<md-select required  ng-model="vendorType">
+			<md-option ng-repeat="vendType in vendorTypesList" value="{{vendType.code}}">
+				{{vendType.desc}}
+			</md-option>
+			</md-select>
+		</md-input-container>
+
+		<md-input-container class="md-block" >
+		  <label><h2>Email id</h2></label>	
+          <input ng-model="email" required />
+        </md-input-container>
+		<md-input-container class="md-block" >
+		  <label><h2>Password</h2></label>	
+          <input ng-model="password" required type="password" />
+        </md-input-container>
+		<section layout layout-align="center center">
+			 <md-button class="md-raised md-warn" ng-click="validateLogin()">Login</md-button>
+			 <md-button class="md-raised md-primay" ng-click="backToAppLanding()">Cancel</md-button>
+		</section>
+	  </form>
+	 </div>
+  </md-content>
+</div>  

@@ -10,12 +10,10 @@ appControllers.controller('appHomeController',['$scope','$location',
 			$location.url('client/login');
 			console.log('Going to client log in page');
 		} ;
-		
+		$scope.vendorLogin=function(){
+			$location.url('vendor/login');
+			console.log('Going to vendor log in page');
+		};
 
 	}]);
 
-appControllers.controller('vendorController',['$scope',
-	function($scope){
-
-
-	}]);

@@ -1,6 +1,6 @@
 var __END_POINT__ = "http://localhost:9080/BackboneWebService/";
 var mainApp = angular.module('healthcareApp', [
-  'ngRoute','ngMaterial','clientModule',
+  'ngRoute','ngMaterial','clientModule','vendorModule',
   'appControllers'
 ]);
 
@@ -15,10 +15,6 @@ mainApp.config(['$routeProvider','$httpProvider',function($routeProvider,$httpPr
 						templateUrl: 'partials/applanding.html',
         				controller: 'appHomeController'
 				}).
-			when('/vendor',{
-				templateUrl : 'partials/vendor/login.html',
-				controller : 'vendorController'
-			}).
 			otherwise({
 
 				redirectTo : '/appLanding'
