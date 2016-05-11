@@ -31,5 +31,12 @@ gulp.task('reload', function () {
 gulp.task('watch', function () {
   gulp.watch(['./src/html/*.html','./src/html/**/*.html','./src/controller/*.js','./src/css/*.css'], ['copyhtml','copyjs','copycss','reload']);
 });
+gulp.task('prod',function(){
+
+  gulp.src('./dist/**/*').pipe(gulp.dest('./prod'));
+  gulp.src('./package.json').pipe(gulp.dest('./prod'));
+  gulp.src('./index.js').pipe(gulp.dest('./prod'));
+});
+gulp.task('package',['copyhtml','copyjslib','copyjs','copycss','prod']);
 
 gulp.task('default', ['init','copyhtml','copyjslib','copyjs','copycss','watch']);
