@@ -1,4 +1,4 @@
-var __END_POINT__ = "http://localhost:9080/BackboneWebService/";
+var __END_POINT__ = "http://healthappwsv0.mybluemix.net/";
 var mainApp = angular.module('healthcareApp', [
   'ngRoute','ngMaterial','clientModule','vendorModule',
   'appControllers'
